@@ -1,0 +1,33 @@
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-primary);
+}
+
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-normal);
+}
+
+.sidebar-collapsed .admin-main {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+.admin-content {
+    flex: 1;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .admin-content {
+        padding: var(--spacing-md);
+    }
+}

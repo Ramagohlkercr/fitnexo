@@ -1,0 +1,199 @@
+.planes-page {
+    animation: fadeIn 0.3s ease;
+}
+
+.page-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.planes-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-3xl);
+    color: var(--text-muted);
+    gap: var(--spacing-md);
+}
+
+.planes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.plan-card {
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-fast);
+}
+
+.plan-card:hover {
+    transform: translateY(-2px);
+}
+
+.plan-inactive {
+    opacity: 0.6;
+}
+
+.plan-card .card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.plan-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+}
+
+.plan-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.plan-status {
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+}
+
+.plan-status.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-500);
+}
+
+.plan-status.inactive {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--text-muted);
+}
+
+.plan-name {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-xs);
+}
+
+.plan-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin: 0 0 var(--spacing-md);
+    line-height: 1.5;
+}
+
+.plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.plan-currency {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.plan-amount {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.plan-duration {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.plan-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: var(--spacing-lg) 0;
+}
+
+.plan-stats {
+    margin-bottom: var(--spacing-lg);
+}
+
+.plan-stat {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-muted);
+}
+
+.plan-stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.plan-stat-label {
+    font-size: var(--font-size-sm);
+}
+
+.plan-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: auto;
+}
+
+.btn-danger-text {
+    color: var(--danger-500) !important;
+}
+
+.btn-danger-text:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Reuse modal styles from Socios.css */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    resize: vertical;
+}
+
+.form-textarea:focus {
+    border-color: var(--primary-500);
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+
+    .page-actions {
+        flex-direction: column;
+    }
+}

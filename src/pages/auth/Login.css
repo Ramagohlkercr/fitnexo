@@ -1,0 +1,107 @@
+.login-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    width: 100%;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.login-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-xs);
+}
+
+.login-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.login-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger-500);
+    color: var(--danger-500);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    text-align: center;
+}
+
+.login-password-wrapper {
+    position: relative;
+}
+
+.login-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 34px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+}
+
+.login-password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+}
+
+.login-remember {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.login-remember input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-500);
+}
+
+.login-forgot {
+    color: var(--primary-400);
+    font-size: var(--font-size-sm);
+}
+
+.login-forgot:hover {
+    color: var(--primary-300);
+}
+
+.login-demo {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.login-demo p {
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    margin: 0;
+}
