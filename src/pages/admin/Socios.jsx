@@ -3,6 +3,7 @@ import { Users, Plus, Search, Filter, Eye, Edit, Trash2, X, RefreshCw, QrCode } 
 import { Button, Card, Input } from '../../components/ui'
 import { sociosApi, planesApi, membresiasApi, pagosApi } from '../../services/api'
 import QRModal from '../../components/ui/QRModal'
+import SocioDetailModal from '../../components/ui/SocioDetailModal'
 import './Socios.css'
 
 const Socios = () => {
@@ -13,6 +14,7 @@ const Socios = () => {
     const [estadoFilter, setEstadoFilter] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [showDetailModal, setShowDetailModal] = useState(false)
+    const [detailSocioId, setDetailSocioId] = useState(null)
     const [selectedSocio, setSelectedSocio] = useState(null)
     const [editMode, setEditMode] = useState(false)
     const [formData, setFormData] = useState({
@@ -155,15 +157,9 @@ const Socios = () => {
         }
     }
 
-    const handleViewDetail = async (socio) => {
-        try {
-            const detail = await sociosApi.getById(socio.id)
-            setSelectedSocio(detail)
-            setShowDetailModal(true)
-        } catch (err) {
-            setSelectedSocio(socio)
-            setShowDetailModal(true)
-        }
+    const handleViewDetail = (socio) => {
+        setDetailSocioId(socio.id)
+        setShowDetailModal(true)
     }
 
     const formatDate = (dateString) => {
@@ -382,72 +378,12 @@ const Socios = () => {
             )}
 
             {/* Modal Detalle */}
-            {showDetailModal && selectedSocio && (
-                <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
-                    <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h2>Detalle del Socio</h2>
-                            <button className="modal-close" onClick={() => setShowDetailModal(false)}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="detail-header">
-                                <div className="detail-avatar">
-                                    {selectedSocio.nombre?.charAt(0)}
-                                </div>
-                                <div className="detail-info">
-                                    <h3>{selectedSocio.nombre} {selectedSocio.apellido}</h3>
-                                    <p>DNI: {selectedSocio.dni}</p>
-                                </div>
-                            </div>
-
-                            <div className="detail-grid">
-                                <div className="detail-item">
-                                    <label>Email</label>
-                                    <span>{selectedSocio.email || '-'}</span>
-                                </div>
-                                <div className="detail-item">
-                                    <label>Teléfono</label>
-                                    <span>{selectedSocio.telefono || '-'}</span>
-                                </div>
-                                <div className="detail-item">
-                                    <label>Plan Actual</label>
-                                    <span>{selectedSocio.plan_nombre || 'Sin plan'}</span>
-                                </div>
-                                <div className="detail-item">
-                                    <label>Vencimiento</label>
-                                    <span>{formatDate(selectedSocio.membresia_fin)}</span>
-                                </div>
-                            </div>
-
-                            {selectedSocio.membresias && selectedSocio.membresias.length > 0 && (
-                                <div className="detail-section">
-                                    <h4>Historial de Membresías</h4>
-                                    <div className="detail-list">
-                                        {selectedSocio.membresias.map((m, i) => (
-                                            <div key={i} className="detail-list-item">
-                                                <span>{m.plan_nombre}</span>
-                                                <span>{formatDate(m.fecha_inicio)} - {formatDate(m.fecha_fin)}</span>
-                                                <span className={`status-badge status-${m.estado === 'activa' ? 'activo' : 'vencido'}`}>
-                                                    {m.estado}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="modal-footer">
-                            <Button variant="secondary" onClick={() => setShowDetailModal(false)}>
-                                Cerrar
-                            </Button>
-                            <Button variant="primary" onClick={() => { setShowDetailModal(false); handleOpenModal(selectedSocio); }}>
-                                Editar Socio
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+            {showDetailModal && detailSocioId && (
+                <SocioDetailModal
+                    socioId={detailSocioId}
+                    onClose={() => { setShowDetailModal(false); setDetailSocioId(null); }}
+                    onEdit={(socio) => handleOpenModal(socio)}
+                />
             )}
         </div>
     )

@@ -103,40 +103,83 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-// GET /api/socios/:id - Get single socio
+// GET /api/socios/:id - Get single socio with full history
 router.get('/:id', async (req, res, next) => {
     try {
         const { id } = req.params
 
-        const result = await query(`
-      SELECT s.*,
-        json_agg(DISTINCT jsonb_build_object(
-          'id', m.id,
-          'plan_nombre', p.nombre,
-          'fecha_inicio', m.fecha_inicio,
-          'fecha_fin', m.fecha_fin,
-          'estado', m.estado
-        )) FILTER (WHERE m.id IS NOT NULL) as membresias,
-        json_agg(DISTINCT jsonb_build_object(
-          'id', pg.id,
-          'monto', pg.monto,
-          'metodo', pg.metodo,
-          'estado', pg.estado,
-          'fecha', pg.fecha
-        )) FILTER (WHERE pg.id IS NOT NULL) as pagos
-      FROM socios s
-      LEFT JOIN membresias m ON m.socio_id = s.id
-      LEFT JOIN planes p ON m.plan_id = p.id
-      LEFT JOIN pagos pg ON pg.socio_id = s.id
-      WHERE s.id = $1 AND s.gimnasio_id = $2
-      GROUP BY s.id
-    `, [id, req.gimnasioId])
+        // Get basic socio info
+        const socioResult = await query(`
+            SELECT s.*,
+                p.nombre as plan_nombre,
+                m.fecha_inicio as membresia_inicio,
+                m.fecha_fin as membresia_fin,
+                m.estado as membresia_estado
+            FROM socios s
+            LEFT JOIN LATERAL (
+                SELECT * FROM membresias 
+                WHERE socio_id = s.id 
+                ORDER BY fecha_fin DESC 
+                LIMIT 1
+            ) m ON true
+            LEFT JOIN planes p ON m.plan_id = p.id
+            WHERE s.id = $1 AND s.gimnasio_id = $2
+        `, [id, req.gimnasioId])
 
-        if (result.rows.length === 0) {
+        if (socioResult.rows.length === 0) {
             return res.status(404).json({ error: 'Socio no encontrado' })
         }
 
-        res.json(result.rows[0])
+        const socio = socioResult.rows[0]
+
+        // Get memberships history
+        const membresiasResult = await query(`
+            SELECT m.id, m.fecha_inicio, m.fecha_fin, m.estado, p.nombre as plan_nombre, p.precio
+            FROM membresias m
+            JOIN planes p ON m.plan_id = p.id
+            WHERE m.socio_id = $1
+            ORDER BY m.fecha_fin DESC
+        `, [id])
+
+        // Get payments history
+        const pagosResult = await query(`
+            SELECT id, monto, metodo, estado, fecha
+            FROM pagos
+            WHERE socio_id = $1
+            ORDER BY fecha DESC
+            LIMIT 20
+        `, [id])
+
+        // Get access history (last 30)
+        const accesosResult = await query(`
+            SELECT id, entrada, salida, metodo
+            FROM accesos
+            WHERE socio_id = $1
+            ORDER BY entrada DESC
+            LIMIT 30
+        `, [id])
+
+        // Get stats
+        const statsResult = await query(`
+            SELECT 
+                (SELECT COUNT(*) FROM accesos WHERE socio_id = $1) as total_accesos,
+                (SELECT COUNT(*) FROM accesos WHERE socio_id = $1 AND entrada >= CURRENT_DATE - INTERVAL '30 days') as accesos_mes,
+                (SELECT COALESCE(SUM(monto), 0) FROM pagos WHERE socio_id = $1 AND estado = 'completado') as total_pagado,
+                (SELECT COUNT(*) FROM membresias WHERE socio_id = $1) as total_membresias
+        `, [id])
+
+        res.json({
+            ...socio,
+            membresias: membresiasResult.rows,
+            pagos: pagosResult.rows,
+            accesos: accesosResult.rows,
+            estadisticas: {
+                totalAccesos: parseInt(statsResult.rows[0]?.total_accesos) || 0,
+                accesosMes: parseInt(statsResult.rows[0]?.accesos_mes) || 0,
+                totalPagado: parseFloat(statsResult.rows[0]?.total_pagado) || 0,
+                totalMembresias: parseInt(statsResult.rows[0]?.total_membresias) || 0
+            }
+        })
     } catch (error) {
         next(error)
     }
