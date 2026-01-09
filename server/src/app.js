@@ -11,6 +11,7 @@ import membresiasRoutes from './routes/membresias.routes.js'
 import pagosRoutes from './routes/pagos.routes.js'
 import accesosRoutes from './routes/accesos.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
+import reportesRoutes from './routes/reportes.routes.js'
 
 // Middleware
 import { errorHandler } from './middleware/errorHandler.js'
@@ -44,6 +45,7 @@ app.use('/api/membresias', membresiasRoutes)
 app.use('/api/pagos', pagosRoutes)
 app.use('/api/accesos', accesosRoutes)
 app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/reportes', reportesRoutes)
 
 // Error handling
 app.use(errorHandler)

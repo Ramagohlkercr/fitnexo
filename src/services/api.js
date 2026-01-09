@@ -252,3 +252,14 @@ export const gimnasioApi = {
         method: 'DELETE',
     }),
 }
+
+// Reportes API
+export const reportesApi = {
+    getIngresos: (periodo = 'mes') => fetchWithAuth(`/reportes/ingresos?periodo=${periodo}`),
+
+    getAccesos: (periodo = 'semana') => fetchWithAuth(`/reportes/accesos?periodo=${periodo}`),
+
+    getMembresias: () => fetchWithAuth('/reportes/membresias'),
+
+    getResumen: () => fetchWithAuth('/reportes/resumen'),
+}
