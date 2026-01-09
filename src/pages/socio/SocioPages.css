@@ -1,0 +1,234 @@
+/* Shared styles for socio pages */
+.socio-page {
+    min-height: 100vh;
+    background: var(--bg-primary);
+}
+
+.socio-page-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.socio-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.socio-back-btn:hover {
+    background: var(--primary-500);
+    color: white;
+}
+
+.socio-page-header h1 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.socio-page-content {
+    padding: var(--spacing-lg);
+}
+
+.socio-page-loading,
+.socio-page-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl);
+    color: var(--text-muted);
+    gap: var(--spacing-md);
+}
+
+/* List styles */
+.socio-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.socio-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+}
+
+.socio-list-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-400);
+    flex-shrink: 0;
+}
+
+.socio-list-icon.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-500);
+}
+
+.socio-list-icon.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-500);
+}
+
+.socio-list-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.socio-list-title {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.socio-list-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.socio-list-amount {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--success-500);
+}
+
+.socio-method-badge {
+    font-size: var(--font-size-xs);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-weight: 500;
+}
+
+.socio-method-badge.qr {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-500);
+}
+
+.socio-method-badge.manual {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-500);
+}
+
+/* Config page */
+.socio-config-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.socio-config-section h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-lg);
+}
+
+.socio-config-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.socio-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.socio-form-group label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.socio-form-group input {
+    padding: 12px 14px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+}
+
+.socio-form-group input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+}
+
+.socio-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-500);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-top: var(--spacing-sm);
+}
+
+.socio-submit-btn:hover:not(:disabled) {
+    background: var(--primary-600);
+}
+
+.socio-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.socio-alert {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+}
+
+.socio-alert.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--danger-500);
+}
+
+.socio-alert.success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--success-500);
+}

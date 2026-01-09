@@ -1,0 +1,175 @@
+.socio-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, #0d0d1a 100%);
+    padding: var(--spacing-lg);
+}
+
+.socio-login-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.socio-login-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.socio-login-logo {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto var(--spacing-md);
+}
+
+.socio-login-header h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.socio-login-header p {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-xs);
+}
+
+.socio-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.socio-login-error {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md);
+    color: var(--danger-500);
+    font-size: var(--font-size-sm);
+}
+
+.socio-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.socio-form-group label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.socio-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.socio-input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.socio-input-wrapper input {
+    width: 100%;
+    padding: 14px 14px 14px 44px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+}
+
+.socio-input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.socio-input-wrapper input::placeholder {
+    color: var(--text-muted);
+}
+
+.socio-password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.socio-password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.socio-form-hint {
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.socio-login-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.socio-login-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.socio-login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.socio-login-footer {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.socio-login-footer a {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.socio-login-footer a:hover {
+    color: var(--primary-400);
+}

@@ -13,6 +13,7 @@ import accesosRoutes from './routes/accesos.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
 import reportesRoutes from './routes/reportes.routes.js'
 import notificacionesRoutes from './routes/notificaciones.routes.js'
+import socioAuthRoutes from './routes/socio-auth.routes.js'
 
 // Middleware
 import { errorHandler } from './middleware/errorHandler.js'
@@ -48,6 +49,7 @@ app.use('/api/accesos', accesosRoutes)
 app.use('/api/dashboard', dashboardRoutes)
 app.use('/api/reportes', reportesRoutes)
 app.use('/api/notificaciones', notificacionesRoutes)
+app.use('/api/socio-auth', socioAuthRoutes)
 
 // Error handling
 app.use(errorHandler)
