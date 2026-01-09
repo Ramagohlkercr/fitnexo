@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { query } from '../config/database.js'
 import { authMiddleware } from '../middleware/auth.js'
+import QRCode from 'qrcode'
 
 const router = Router()
 
@@ -214,13 +215,14 @@ router.delete('/:id', async (req, res, next) => {
     }
 })
 
-// GET /api/socios/:id/qr - Get QR code data for access
+// GET /api/socios/:id/qr - Get QR code image for access
 router.get('/:id/qr', async (req, res, next) => {
     try {
         const { id } = req.params
+        const { format = 'json' } = req.query // json or image
 
         const result = await query(`
-      SELECT s.id, s.dni, s.nombre, s.apellido,
+      SELECT s.id, s.dni, s.nombre, s.apellido, s.gimnasio_id,
         m.fecha_fin as membresia_fin,
         m.estado as membresia_estado,
         p.nombre as plan_nombre
@@ -240,17 +242,48 @@ router.get('/:id/qr', async (req, res, next) => {
         }
 
         const socio = result.rows[0]
+        const membresiaActiva = socio.membresia_estado === 'activa' && new Date(socio.membresia_fin) >= new Date()
 
-        // Generate QR data (socio ID + validation hash)
-        const qrData = {
+        // QR data - encoded JSON with socio info
+        const qrPayload = {
             id: socio.id,
-            dni: socio.dni,
-            nombre: `${socio.nombre} ${socio.apellido}`,
-            membresiaActiva: socio.membresia_estado === 'activa' && new Date(socio.membresia_fin) >= new Date(),
-            validHasta: socio.membresia_fin
+            gym: socio.gimnasio_id,
+            ts: Date.now() // timestamp for validation
         }
 
-        res.json(qrData)
+        // Generate QR code as base64 data URL
+        const qrDataUrl = await QRCode.toDataURL(JSON.stringify(qrPayload), {
+            width: 300,
+            margin: 2,
+            color: {
+                dark: '#1a1a2e',
+                light: '#ffffff'
+            }
+        })
+
+        // Response data
+        const responseData = {
+            socio: {
+                id: socio.id,
+                dni: socio.dni,
+                nombre: `${socio.nombre} ${socio.apellido}`,
+                plan: socio.plan_nombre,
+                membresiaActiva,
+                validHasta: socio.membresia_fin
+            },
+            qrCode: qrDataUrl,
+            qrPayload: qrPayload
+        }
+
+        if (format === 'image') {
+            // Return raw image
+            const base64Data = qrDataUrl.replace(/^data:image\/png;base64,/, '')
+            const imgBuffer = Buffer.from(base64Data, 'base64')
+            res.set('Content-Type', 'image/png')
+            return res.send(imgBuffer)
+        }
+
+        res.json(responseData)
     } catch (error) {
         next(error)
     }

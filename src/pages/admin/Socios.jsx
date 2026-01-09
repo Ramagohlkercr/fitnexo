@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Users, Plus, Search, Filter, Eye, Edit, Trash2, X, RefreshCw } from 'lucide-react'
+import { Users, Plus, Search, Filter, Eye, Edit, Trash2, X, RefreshCw, QrCode } from 'lucide-react'
 import { Button, Card, Input } from '../../components/ui'
 import { sociosApi, planesApi, membresiasApi, pagosApi } from '../../services/api'
+import QRModal from '../../components/ui/QRModal'
 import './Socios.css'
 
 const Socios = () => {
@@ -25,6 +26,8 @@ const Socios = () => {
     })
     const [formError, setFormError] = useState('')
     const [saving, setSaving] = useState(false)
+    const [showQRModal, setShowQRModal] = useState(false)
+    const [qrSocioId, setQrSocioId] = useState(null)
 
     // Pagination
     const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 })
@@ -253,6 +256,9 @@ const Socios = () => {
                                         </td>
                                         <td>
                                             <div className="action-buttons">
+                                                <button className="action-btn action-btn-qr" title="Ver QR" onClick={() => { setQrSocioId(socio.id); setShowQRModal(true); }}>
+                                                    <QrCode size={16} />
+                                                </button>
                                                 <button className="action-btn" title="Ver detalle" onClick={() => handleViewDetail(socio)}>
                                                     <Eye size={16} />
                                                 </button>
@@ -365,6 +371,14 @@ const Socios = () => {
                         </form>
                     </div>
                 </div>
+            )}
+
+            {/* Modal QR */}
+            {showQRModal && qrSocioId && (
+                <QRModal
+                    socioId={qrSocioId}
+                    onClose={() => { setShowQRModal(false); setQrSocioId(null); }}
+                />
             )}
 
             {/* Modal Detalle */}

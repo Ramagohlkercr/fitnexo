@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { DoorOpen, QrCode, Search, RefreshCw, CheckCircle, XCircle, Clock, UserCheck } from 'lucide-react'
+import { DoorOpen, QrCode, Search, RefreshCw, CheckCircle, XCircle, Clock, UserCheck, Camera } from 'lucide-react'
 import { Button, Card, Input } from '../../components/ui'
 import { accesosApi, sociosApi } from '../../services/api'
+import QRScanner from '../../components/ui/QRScanner'
 import './Accesos.css'
 
 const Accesos = () => {
@@ -13,6 +14,7 @@ const Accesos = () => {
     const [registrando, setRegistrando] = useState(false)
     const [ultimoAcceso, setUltimoAcceso] = useState(null)
     const [estadisticas, setEstadisticas] = useState(null)
+    const [showScanner, setShowScanner] = useState(false)
 
     const fetchData = async () => {
         setLoading(true)
@@ -59,12 +61,12 @@ const Accesos = () => {
         }
     }, [socioSearch, socios])
 
-    const handleRegistrarEntrada = async (socio) => {
+    const handleRegistrarEntrada = async (socioId, metodo = 'manual') => {
         setRegistrando(true)
         setUltimoAcceso(null)
 
         try {
-            const response = await accesosApi.registrarEntrada(socio.id, 'manual')
+            const response = await accesosApi.registrarEntrada(socioId, metodo)
             setUltimoAcceso({
                 success: true,
                 mensaje: response.mensaje,
@@ -83,12 +85,33 @@ const Accesos = () => {
         }
     }
 
-    const handleSimularQR = async () => {
-        // Simular escaneo QR con un socio aleatorio
-        if (socios.length === 0) return
+    const handleQRScan = async (qrData) => {
+        setShowScanner(false)
 
-        const randomSocio = socios[Math.floor(Math.random() * socios.length)]
-        await handleRegistrarEntrada(randomSocio)
+        if (qrData?.id) {
+            // QR with socio ID
+            await handleRegistrarEntrada(qrData.id, 'qr')
+        } else if (qrData?.raw) {
+            // Try to parse raw QR data
+            try {
+                const parsed = JSON.parse(qrData.raw)
+                if (parsed.id) {
+                    await handleRegistrarEntrada(parsed.id, 'qr')
+                    return
+                }
+            } catch {
+                // Not JSON
+            }
+            setUltimoAcceso({
+                success: false,
+                mensaje: 'QR inválido. No se encontró información del socio.'
+            })
+        } else {
+            setUltimoAcceso({
+                success: false,
+                mensaje: 'No se pudo leer el código QR'
+            })
+        }
     }
 
     const formatTime = (dateString) => {
@@ -106,9 +129,14 @@ const Accesos = () => {
                     <h1 className="page-title">Control de Accesos</h1>
                     <p className="page-subtitle">Registra y controla los accesos al gimnasio</p>
                 </div>
-                <Button variant="secondary" icon={RefreshCw} onClick={fetchData}>
-                    Actualizar
-                </Button>
+                <div className="page-actions">
+                    <Button variant="primary" icon={Camera} onClick={() => setShowScanner(true)}>
+                        Escanear QR
+                    </Button>
+                    <Button variant="secondary" icon={RefreshCw} onClick={fetchData}>
+                        Actualizar
+                    </Button>
+                </div>
             </div>
 
             {/* Stats Cards */}
@@ -164,7 +192,7 @@ const Accesos = () => {
                                             <div
                                                 key={socio.id}
                                                 className="socio-option"
-                                                onClick={() => handleRegistrarEntrada(socio)}
+                                                onClick={() => handleRegistrarEntrada(socio.id, 'manual')}
                                             >
                                                 <div>
                                                     <span className="socio-option-name">{socio.nombre} {socio.apellido}</span>
@@ -180,14 +208,14 @@ const Accesos = () => {
                             </div>
                         </div>
 
-                        {/* QR Scanner Simulation */}
+                        {/* QR Scanner Button */}
                         <div className="registro-section">
                             <h4>Escáner QR</h4>
                             <div className="qr-scanner-placeholder">
                                 <QrCode size={64} />
-                                <p>Apunta la cámara al código QR del socio</p>
-                                <Button variant="secondary" icon={QrCode} onClick={handleSimularQR}>
-                                    Simular Escaneo QR
+                                <p>Escanea el código QR del socio para registrar entrada</p>
+                                <Button variant="primary" icon={Camera} onClick={() => setShowScanner(true)}>
+                                    Abrir Escáner
                                 </Button>
                             </div>
                         </div>
@@ -232,6 +260,14 @@ const Accesos = () => {
                     )}
                 </Card>
             </div>
+
+            {/* QR Scanner Modal */}
+            {showScanner && (
+                <QRScanner
+                    onScan={handleQRScan}
+                    onClose={() => setShowScanner(false)}
+                />
+            )}
         </div>
     )
 }
