@@ -1,5 +1,6 @@
-import { Search, Bell, Menu, User } from 'lucide-react'
+import { Search, Menu, User } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
+import NotificationBell from '../ui/NotificationBell'
 import './Header.css'
 
 const Header = ({ onToggleSidebar }) => {
@@ -23,10 +24,7 @@ const Header = ({ onToggleSidebar }) => {
             </div>
 
             <div className="header-right">
-                <button className="header-notification">
-                    <Bell size={20} />
-                    <span className="header-notification-badge">3</span>
-                </button>
+                <NotificationBell />
 
                 <div className="header-user">
                     <div className="header-avatar">

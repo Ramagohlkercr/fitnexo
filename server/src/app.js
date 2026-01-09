@@ -12,6 +12,7 @@ import pagosRoutes from './routes/pagos.routes.js'
 import accesosRoutes from './routes/accesos.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
 import reportesRoutes from './routes/reportes.routes.js'
+import notificacionesRoutes from './routes/notificaciones.routes.js'
 
 // Middleware
 import { errorHandler } from './middleware/errorHandler.js'
@@ -46,6 +47,7 @@ app.use('/api/pagos', pagosRoutes)
 app.use('/api/accesos', accesosRoutes)
 app.use('/api/dashboard', dashboardRoutes)
 app.use('/api/reportes', reportesRoutes)
+app.use('/api/notificaciones', notificacionesRoutes)
 
 // Error handling
 app.use(errorHandler)

@@ -263,3 +263,10 @@ export const reportesApi = {
 
     getResumen: () => fetchWithAuth('/reportes/resumen'),
 }
+
+// Notificaciones API
+export const notificacionesApi = {
+    getAll: () => fetchWithAuth('/notificaciones'),
+
+    getResumen: () => fetchWithAuth('/notificaciones/resumen'),
+}
